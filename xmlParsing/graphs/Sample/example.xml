@@ -6,4 +6,7 @@
 <bats source="first" target="second"/>
 <bats source="third" target="first"/>
 <bats source="third" target="second"/>
+<strings name="left"/>
+<strings name="right"/>
+<knots source="left" target="right"/>
 </graph>

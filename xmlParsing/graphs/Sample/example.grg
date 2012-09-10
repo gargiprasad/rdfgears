@@ -1,13 +1,12 @@
 using example;
 rule sampleRule{
+string1:strings;
+string2:strings;
 ball1:balls;
 ball2:balls;
-hom(ball1,ball2);
-ball1 -myEdge0:bats->ball2;
-negative{
-    if { ( myEdge0.id == "x" ); }
-}
+string1 -myEdge0:knots->string2;
+ball1 -myEdge1:bats->ball2;
 modify{
-    delete(myEdge0);
+    delete(myEdge1);
     }
 }

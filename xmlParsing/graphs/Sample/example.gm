@@ -1,4 +1,8 @@
 node class balls { name : string; }
+node class strings {name :string; }
 edge class bats {
+    id: string;
+}
+edge class knots {
     id: string;
 }

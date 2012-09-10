@@ -53,9 +53,11 @@ public class ReadExample {
 			
 			NodeList nList1 = doc.getElementsByTagName("balls");
 			NodeList nList2 = doc.getElementsByTagName("bats");
+			NodeList nList3 = doc.getElementsByTagName("strings");
+			NodeList nList4 = doc.getElementsByTagName("knots");
 			String toWrite="";
 			
-			//for tagname:node
+			//for tagname:balls
 			for (int i = 0; i < nList1.getLength(); i++) {
 				org.w3c.dom.Node nNode = nList1.item(i);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -82,7 +84,7 @@ public class ReadExample {
 			}
 			out.write(toWrite);
 			toWrite="";
-			//for tagname:edge
+			//for tagname:bats
 			for (int i = 0; i < nList2.getLength(); i++) {
 				org.w3c.dom.Node nNode = nList2.item(i);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -109,7 +111,64 @@ public class ReadExample {
 			}
 			out.write(toWrite);
 			toWrite="";
-			toWrite="\ndebug exec sampleRule\ndump graph result.grs";
+			
+			
+			//for tagname:strings
+			for (int i = 0; i < nList3.getLength(); i++) {
+				org.w3c.dom.Node nNode = nList3.item(i);
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					 Element eElement = (Element) nNode;
+					 toWrite+="new "+"string"+(i+1)+":"+eElement.getNodeName();
+					int x=1;	
+					 if (eElement.hasAttributes()){
+						
+					      NamedNodeMap attributes = (NamedNodeMap)eElement.getAttributes();
+					      
+			                for (int g = 0; g < attributes.getLength(); g++) {
+			                	if (x==1)
+									toWrite+="(" ;//first attribute
+								else
+									toWrite+=",";// every subsequent attribute
+			                	x=attributes.getLength();
+			                    Attr attribute = (Attr)attributes.item(g);
+			                    toWrite+= attribute.getName() +
+			                    "=\"" +attribute.getValue()+"\"";
+			                }
+			                toWrite+=")\n";
+						}
+				}
+			}
+			out.write(toWrite);
+			toWrite="";
+			
+			//for tagname:knots
+			for (int i = 0; i < nList4.getLength(); i++) {
+				org.w3c.dom.Node nNode = nList4.item(i);
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					 Element eElement = (Element) nNode;
+					 toWrite+="new string"+getStringname(eElement.getAttribute("source"))+" -:knots-> "+"string"+getStringname(eElement.getAttribute("target"));
+					/*int x=1;	
+					 if (eElement.hasAttributes()){
+					      NamedNodeMap attributes = (NamedNodeMap)eElement.getAttributes();
+					      
+			                for (int g = 0; g < attributes.getLength(); g++) {
+			                	if (x==1)
+									toWrite+="(" ;//first attribute
+								else
+									toWrite+=",";// every subsequent attribute
+			                	x=attributes.getLength();
+			                    Attr attribute = (Attr)attributes.item(g);
+			                    toWrite+=  attribute.getName() +
+			                    "=\"" +attribute.getValue()+"\"";
+			                }
+			                toWrite+=")\n";
+						}*/
+					 toWrite+="\n";
+				}
+			}
+			out.write(toWrite);
+			toWrite="";
+			toWrite="\ndebug exec sampleRule *\ndump graph result.grs";
 			out.write(toWrite);
 			/*
 			// Keep reading elements till you reach the end of subNode i.e - end of </operations> tag
@@ -182,6 +241,10 @@ public class ReadExample {
 			return 2;
 		else if(str.equalsIgnoreCase("third"))
 				return 3;
+		else if(str.equals("left"))
+			return 1;
+		else if(str.equalsIgnoreCase("right"))
+				return 2;
 		return 0;
 	}
 	

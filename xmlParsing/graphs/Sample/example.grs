@@ -1,11 +1,14 @@
-new graph example "result"
+new graph example
 
-new ball1:balls($="1",name="first")
-new ball2:balls($="2",name="second")
-new ball3:balls($="3",name="third")
-new @("1") -:bats(id="a")-> @("2")
-new @("3") -:bats(id="b")-> @("1")
-new @("3") -:bats(id="c")-> @("2")
+new ball1:balls(name="first")
+new ball2:balls(name="second")
+new ball3:balls(name="third")
+new ball1 -:bats-> ball2
+new ball3 -:bats-> ball1
+new ball3 -:bats-> ball2
+new string1:strings(name="left")
+new string2:strings(name="right")
+new string1 -:knots-> string2
 
-debug exec sampleRule
+debug exec sampleRule *
 dump graph result.grs
