@@ -1,0 +1,11 @@
+new graph example "result"
+
+new ball1:balls($="1",name="first")
+new ball2:balls($="2",name="second")
+new ball3:balls($="3",name="third")
+new @("1") -:bats(id="a")-> @("2")
+new @("3") -:bats(id="b")-> @("1")
+new @("3") -:bats(id="c")-> @("2")
+
+debug exec sampleRule
+dump graph result.grs

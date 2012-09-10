@@ -1,0 +1,13 @@
+using example;
+rule sampleRule{
+ball1:balls;
+ball2:balls;
+hom(ball1,ball2);
+ball1 -myEdge0:bats->ball2;
+negative{
+    if { ( myEdge0.id == "x" ); }
+}
+modify{
+    delete(myEdge0);
+    }
+}
