@@ -1,14 +1,15 @@
 new graph example
 
-new ball1:balls(name="first")
-new ball2:balls(name="second")
-new ball3:balls(name="third")
-new ball1 -:bats-> ball2
-new ball3 -:bats-> ball1
-new ball3 -:bats-> ball2
-new string1:strings(name="left")
-new string2:strings(name="right")
-new string1 -:knots-> string2
+new :balls($=first)
+new :balls($=second)
+new :balls($=third)
+new @(first) -:bats($=bat1)-> @(second)
+new @(third) -:bats($=bat2)-> @(first)
+new @(third) -:bats($=bat3)-> @(second)
+new :strings($=left)
+new :strings($=right)
+new @(left) -:knots($=knot1)-> @(right)
+
 
 debug exec sampleRule *
-dump graph result.grs
+save graph result.grs

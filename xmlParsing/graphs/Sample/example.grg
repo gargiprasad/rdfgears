@@ -7,6 +7,6 @@ ball2:balls;
 string1 -myEdge0:knots->string2;
 ball1 -myEdge1:bats->ball2;
 modify{
-    delete(myEdge1);
+    delete (myEdge0);
     }
 }

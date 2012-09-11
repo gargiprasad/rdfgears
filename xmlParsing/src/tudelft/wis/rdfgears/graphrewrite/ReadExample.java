@@ -56,18 +56,18 @@ public class ReadExample {
 			NodeList nList3 = doc.getElementsByTagName("strings");
 			NodeList nList4 = doc.getElementsByTagName("knots");
 			String toWrite="";
-			
+			int gotANameAttr= 0;
 			//for tagname:balls
 			for (int i = 0; i < nList1.getLength(); i++) {
 				org.w3c.dom.Node nNode = nList1.item(i);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					 Element eElement = (Element) nNode;
-					 toWrite+="new "+"ball"+(i+1)+":"+eElement.getNodeName();
-					int x=1;	
+					 toWrite+="new "+":"+"balls";
+					int x=1;	gotANameAttr= 0;
 					 if (eElement.hasAttributes()){
 						
 					      NamedNodeMap attributes = (NamedNodeMap)eElement.getAttributes();
-					      
+					     
 			                for (int g = 0; g < attributes.getLength(); g++) {
 			                	if (x==1)
 									toWrite+="(" ;//first attribute
@@ -75,21 +75,33 @@ public class ReadExample {
 									toWrite+=",";// every subsequent attribute
 			                	x=attributes.getLength();
 			                    Attr attribute = (Attr)attributes.item(g);
-			                    toWrite+= attribute.getName() +
-			                    "=\"" +attribute.getValue()+"\"";
+			                    if(!attribute.getName().equals("name")){
+			                    	toWrite+= attribute.getName() +
+			                    		"=" +attribute.getValue()+"";}
+			                    else{
+			                    	 toWrite+="$="+attribute.getValue();
+			                    	 gotANameAttr=1;
+			                    }
 			                }
+			                if(gotANameAttr==0){
+			                	toWrite+=",$=ball"+(i+1)+")\n";
+			                }
+			                else 
 			                toWrite+=")\n";
-						}
+					      
+						}else // no attributes case
+					    	  toWrite+="($=ball"+(i+1)+")\n";
 				}
 			}
 			out.write(toWrite);
 			toWrite="";
+			
 			//for tagname:bats
 			for (int i = 0; i < nList2.getLength(); i++) {
 				org.w3c.dom.Node nNode = nList2.item(i);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					 Element eElement = (Element) nNode;
-					 toWrite+="new ball"+getStringname(eElement.getAttribute("source"))+" -:bats-> "+"ball"+getStringname(eElement.getAttribute("target"));
+					 toWrite+="new @("+eElement.getAttribute("source")+") -:bats($=bat"+(i+1)+")-> @("+eElement.getAttribute("target")+")\n";
 					/*int x=1;	
 					 if (eElement.hasAttributes()){
 					      NamedNodeMap attributes = (NamedNodeMap)eElement.getAttributes();
@@ -106,7 +118,7 @@ public class ReadExample {
 			                }
 			                toWrite+=")\n";
 						}*/
-					 toWrite+="\n";
+					// toWrite+="\n";
 				}
 			}
 			out.write(toWrite);
@@ -118,12 +130,12 @@ public class ReadExample {
 				org.w3c.dom.Node nNode = nList3.item(i);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					 Element eElement = (Element) nNode;
-					 toWrite+="new "+"string"+(i+1)+":"+eElement.getNodeName();
-					int x=1;	
+					 toWrite+="new "+":"+"strings";
+					int x=1;	gotANameAttr= 0;
 					 if (eElement.hasAttributes()){
 						
 					      NamedNodeMap attributes = (NamedNodeMap)eElement.getAttributes();
-					      
+					      if(attributes.getLength()>0){
 			                for (int g = 0; g < attributes.getLength(); g++) {
 			                	if (x==1)
 									toWrite+="(" ;//first attribute
@@ -131,10 +143,21 @@ public class ReadExample {
 									toWrite+=",";// every subsequent attribute
 			                	x=attributes.getLength();
 			                    Attr attribute = (Attr)attributes.item(g);
-			                    toWrite+= attribute.getName() +
-			                    "=\"" +attribute.getValue()+"\"";
+			                    if(!attribute.getName().equals("name"))
+			                    	toWrite+= attribute.getName() +
+			                    		"=" +attribute.getValue()+"";
+			                    else{
+			                    	 toWrite+="$="+attribute.getValue();
+			                    	 gotANameAttr=1;
+			                    }
 			                }
+			                if(gotANameAttr!=1){
+			                	toWrite+=",$=string"+(i+1)+")\n";
+			                }
+			                else
 			                toWrite+=")\n";
+					      }else // no attributes case
+					    	  toWrite+="($=string"+(i+1)+")\n";
 						}
 				}
 			}
@@ -146,7 +169,7 @@ public class ReadExample {
 				org.w3c.dom.Node nNode = nList4.item(i);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					 Element eElement = (Element) nNode;
-					 toWrite+="new string"+getStringname(eElement.getAttribute("source"))+" -:knots-> "+"string"+getStringname(eElement.getAttribute("target"));
+					 toWrite+="new @("+eElement.getAttribute("source")+") -:knots($=knot"+(i+1)+")-> @("+eElement.getAttribute("target")+")\n";
 					/*int x=1;	
 					 if (eElement.hasAttributes()){
 					      NamedNodeMap attributes = (NamedNodeMap)eElement.getAttributes();
@@ -163,12 +186,12 @@ public class ReadExample {
 			                }
 			                toWrite+=")\n";
 						}*/
-					 toWrite+="\n";
+					// toWrite+="\n";
 				}
 			}
 			out.write(toWrite);
 			toWrite="";
-			toWrite="\ndebug exec sampleRule *\ndump graph result.grs";
+			toWrite="\n\ndebug exec sampleRule *\nsave graph result.grs";
 			out.write(toWrite);
 			/*
 			// Keep reading elements till you reach the end of subNode i.e - end of </operations> tag
